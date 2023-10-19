@@ -3,6 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier, MLPRegressor
 from sklearn.metrics import mean_squared_error, accuracy_score
 
+# Usando regressao
 def train_continuos_values(x, y):
     X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
@@ -14,6 +15,7 @@ def train_continuos_values(x, y):
     mse = mean_squared_error(y_test, y_pred)
     print(f'Erro Médio Quadrático (MSE): {mse:.2f}')
 
+# Usando classificacao
 def train_discret_values(x, y):
     X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
