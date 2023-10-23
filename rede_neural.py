@@ -4,7 +4,7 @@ from sklearn.neural_network import MLPClassifier, MLPRegressor
 from sklearn.metrics import mean_squared_error, accuracy_score
 import matplotlib.pyplot as plt
 
-# Usando regressao
+# Usando regressao para a gravidade
 def train_continuos_values(x, y):
     X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
@@ -14,20 +14,20 @@ def train_continuos_values(x, y):
         quantidade_neuronio_camada.append(100)
 
     model = MLPRegressor(
-        hidden_layer_sizes = quantidade_neuronio_camada,     # 1 camada oculta com somente 100 neuronio
-        activation = "relu",                                 # returns f(x) = max(0, x)
-        solver = "adam",                                     # adam = SGD mas com alteracoes de uns manos lah.
-        learning_rate = "constant",         
-        learning_rate_init = 0.01,                           # ------------- Nesse modelo, altera esse parametro aqui para ver a diferenca no erro quadratico emdio
-        max_iter = 1000,
+        # hidden_layer_sizes = quantidade_neuronio_camada,     # 1 camada oculta com somente 100 neuronio
+        # activation = "relu",                                 # returns f(x) = max(0, x)
+        # solver = "adam",                                     # adam = SGD mas com alteracoes de uns manos lah.
+        # learning_rate = "constant",         
+        # learning_rate_init = 0.01,                           # ------------- Nesse modelo, altera esse parametro aqui para ver a diferenca no erro quadratico emdio
+        # max_iter = 1000,
         random_state = 1,                                    # Para deixar a "aleatoriedade" consistente, para conseguir verificar o impacto dos hiperparametros, reproduzir esse mesmo teste diferentes vezes, etc. Nao mexer aqui
-        verbose = True,
-        # alpha = 1,
-        early_stopping=True,                                 
-        n_iter_no_change = 100,                             # Parametro para ver quantas epocas o loss nao baixa por um numero x ou a otimizacao nao melhora
-        shuffle = True,
-        momentum = 1,
-        nesterovs_momentum = True
+        # verbose = True,
+        # # alpha = 1,
+        # # early_stopping=True,                                 
+        # n_iter_no_change = 100,                             # Parametro para ver quantas epocas o loss nao baixa por um numero x ou a otimizacao nao melhora
+        # shuffle = True,
+        # momentum = 1,
+        # nesterovs_momentum = True
         )
     model.fit(X_train, y_train)
 
@@ -39,21 +39,23 @@ def train_continuos_values(x, y):
     # Entao, quanto menor esse erro, mais o modelo estah acertando os valores previstos
     mse = mean_squared_error(y_test, y_pred)
     print(f'Erro Médio Quadrático (MSE): {mse:.2f}')
+    best_loss = model.best_loss_
+    print(f'Melhor Loss: {best_loss:.2f}')
 
     loss_curve = model.loss_curve_
-    validation_curve = model.validation_scores_
+    # validation_curve = model.validation_scores_
 
     plt.plot(range(1, len(loss_curve) + 1), loss_curve, label='Curva Loss')
-    plt.plot(range(1, len(validation_curve) + 1), validation_curve, label='Pontuação de Validação')
+    # plt.plot(range(1, len(validation_curve) + 1), validation_curve, label='Pontuação de Validação')
     plt.title('Curva de Validação')
     plt.xlabel('Épocas')
     plt.ylabel('Pontuação')
     plt.grid(True)
     plt.legend()
     # plt.show()
-    plt.savefig('validacao_loss_regressao.png')
+    plt.savefig('rede_neural_gravidade_valoresOtimizados.png')
 
-# Usando classificacao
+# Usando classificacao, para a classificacao da gravidade
 def train_discret_values(x, y):
     X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
@@ -76,26 +78,29 @@ def train_discret_values(x, y):
         n_iter_no_change = 1000,                             # Parametro para ver quantas epocas o loss nao baixa por um numero x ou a otimizacao nao melhora
         shuffle = True,
         momentum = 1,
-        nesterovs_momentum = True)
+        nesterovs_momentum = True
+        )
     model.fit(X_train, y_train)
 
     y_pred = model.predict(X_test)
 
     accuracy = accuracy_score(y_test, y_pred)
     print(f'Acurácia do modelo: {accuracy:.2f}')
+    # best_loss = model.best_loss_
+    # print(f'Melhor Loss: {best_loss:.2f}')
 
     loss_curve = model.loss_curve_
     validation_curve = model.validation_scores_
 
     plt.plot(range(1, len(loss_curve) + 1), loss_curve, label='Curva Loss')
-    plt.plot(range(1, len(validation_curve) + 1), validation_curve, label='Pontuação de Validação')
-    plt.title('Curva de Validação')
-    plt.xlabel('Épocas')
-    plt.ylabel('Pontuação')
+    plt.plot(range(1, len(validation_curve) + 1), validation_curve, label='Pontuacao de Validacao')
+    plt.title('Curva de pontuacao Hiperparametros Padroes')
+    plt.xlabel('Epocas')
+    plt.ylabel('Pontuacao')
     plt.grid(True)
     plt.legend()
     # plt.show()
-    plt.savefig('validacao_loss.png')
+    plt.savefig('rede_neural_classificacaoGravidade_valoresOtimizados.png')
 
 
 nomes_colhnas_com_label = ["qPA", "pulso", "freq", "gravidade", "classes"]
@@ -110,4 +115,4 @@ y = y.reset_index(drop=True)
 y_classe = y_classe.reset_index(drop=True)
 
 train_continuos_values(x, y)
-train_discret_values(x, y_classe.values)
+# train_discret_values(x, y_classe.values)
