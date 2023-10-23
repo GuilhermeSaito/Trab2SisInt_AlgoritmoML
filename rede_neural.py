@@ -110,4 +110,4 @@ y = y.reset_index(drop=True)
 y_classe = y_classe.reset_index(drop=True)
 
 train_continuos_values(x, y)
-# train_discret_values(x, y_classe.values)
+train_discret_values(x, y_classe.values)
