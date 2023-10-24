@@ -1,19 +1,32 @@
 import numpy as np
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
 
 def train_values(x, y, cont):
     X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
-    model = DecisionTreeClassifier(
-        criterion = "entropy",
-        splitter = "best",
-        max_depth = 14,
-        random_state = 1
-    )
+
+
+    param_grid = {
+        "criterion": ["gini", "entropy", "log_loss"],
+        "splitter": ["best", "random"],
+        "max_depth": [1, 4, 8, 10, 14, 20],
+    }
+
+    model = DecisionTreeClassifier(random_state = 1)
+    grid_search = GridSearchCV(model, param_grid, cv = 5, scoring = 'neg_mean_squared_error', verbose = 2)
+
+    grid_search.fit(X_train, y_train)
+
+    best_params = grid_search.best_params_
+    print("Melhores hiperparametros Arvore Decisao Continuo" + str(cont) + "(Gravidade):", best_params)
+
+    melhor_model = DecisionTreeClassifier(random_state = 1, **best_params)
+    melhor_model.fit(X_train, y_train)
+
     model.fit(X_train, y_train)
 
     y_pred = model.predict(X_test)
@@ -32,7 +45,7 @@ def train_values(x, y, cont):
     plt.grid(True)
     # plt.legend()
     # plt.show()
-    plt.savefig('arvore_decisao_gravidade_classeGravidade_valoresOtimizados' + str(cont) + '.png')
+    plt.savefig('arvore_decisao_gravidade_classeGravidade_valoresAutomatizados' + str(cont) + '.png')
     plt.clf()
 
 nomes_colhnas_com_label = ["qPA", "pulso", "freq", "gravidade", "classes"]
