@@ -54,6 +54,7 @@ def train_continuos_values(x, y):
     plt.legend()
     # plt.show()
     plt.savefig('rede_neural_gravidade_valoresOtimizados.png')
+    plt.clf()
 
 # Usando classificacao, para a classificacao da gravidade
 def train_discret_values(x, y):
@@ -101,6 +102,7 @@ def train_discret_values(x, y):
     plt.legend()
     # plt.show()
     plt.savefig('rede_neural_classificacaoGravidade_valoresOtimizados.png')
+    plt.clf()
 
 
 nomes_colhnas_com_label = ["qPA", "pulso", "freq", "gravidade", "classes"]
