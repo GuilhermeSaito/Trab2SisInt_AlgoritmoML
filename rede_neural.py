@@ -14,12 +14,10 @@ def train_continuos_values_hiperparametros_otimizados(x, y):
         quantidade_neuronio_camada.append(100)
 
     param_grid = {
-        "hidden_layer_sizes": [(10, 10), (90, 90), quantidade_neuronio_camada],
-        "activation": ["tanh", "relu"],
-        "solver": ["sgd", "adam"],
+        "hidden_layer_sizes": [(90, 90), quantidade_neuronio_camada],
         "learning_rate": ["constant", "adaptive"],
         "learning_rate_init": [0.001, 0.0001],
-        "max_iter": [100, 1000],
+        "max_iter": [10, 100],
         "n_iter_no_change": [10, 100]
     }
 
@@ -69,12 +67,10 @@ def train_discret_values_hiperparametros_otimizados(x, y):
         quantidade_neuronio_camada.append(100)
 
     param_grid = {
-        "hidden_layer_sizes": [(10, 10), (90, 90), quantidade_neuronio_camada],
-        "activation": ["tanh", "relu"],
-        "solver": ["sgd", "adam"],
+        "hidden_layer_sizes": [(90, 90), quantidade_neuronio_camada],
         "learning_rate": ["constant", "adaptive"],
         "learning_rate_init": [0.001, 0.0001],
-        "max_iter": [100, 1000],
+        "max_iter": [10, 100],
         "n_iter_no_change": [10, 100]
     }
 
@@ -95,14 +91,14 @@ def train_discret_values_hiperparametros_otimizados(x, y):
 
     accuracy = accuracy_score(y_test, y_pred)
     print(f'Acurácia do modelo: {accuracy:.2f}')
-    # best_loss = model.best_loss_
-    # print(f'Melhor Loss: {best_loss:.2f}')
+    best_loss = model.best_loss_
+    print(f'Melhor Loss: {best_loss:.2f}')
 
     loss_curve = model.loss_curve_
-    validation_curve = model.validation_scores_
+    # validation_curve = model.validation_scores_
 
     plt.plot(range(1, len(loss_curve) + 1), loss_curve, label='Curva Loss')
-    plt.plot(range(1, len(validation_curve) + 1), validation_curve, label='Pontuacao de Validacao')
+    # plt.plot(range(1, len(validation_curve) + 1), validation_curve, label='Pontuacao de Validacao')
     plt.title('Curva de pontuacao Hiperparametros Padroes')
     plt.xlabel('Epocas')
     plt.ylabel('Pontuacao')
@@ -226,5 +222,5 @@ y_classe = y_classe.reset_index(drop=True)
 
 # train_continuos_values(x, y)
 # train_discret_values(x, y_classe.values)
-# train_continuos_values_hiperparametros_otimizados(x, y)
-train_discret_values_hiperparametros_otimizados(x, y_classe.values)
+train_continuos_values_hiperparametros_otimizados(x, y)
+# train_discret_values_hiperparametros_otimizados(x, y_classe.values)
